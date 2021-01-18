@@ -1,32 +1,50 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+var createError = require("http-errors");
 
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var moviesRouter = require("./routes/movies");
 // start app
 const app = express();
 
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 // Express port
-const port = process.env.PORT || 8080;
+
 // const db = process.env.DATABASE
 
 // CORS
 app.use(cors());
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "public", "build")));
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/movies", moviesRouter);
 
-// Setting up a route for our API
-app.get("/api/", (req, res) => {
-  return res.status(200).json({
-    status: "success",
-  });
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  next(createError(404));
 });
 
-// Redirect back to index.html if urls do not match
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render("error");
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+module.exports = app;
