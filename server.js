@@ -14,7 +14,7 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "public", "build")));
 
 // Sanitize against NoSQL query injections
 app.use(mongoSanitize());

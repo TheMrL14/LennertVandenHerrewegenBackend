@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "clientBuild": "cd client && npm run build",
-    "start": "npm run clientBuild && nodemon server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
