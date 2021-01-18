@@ -6,7 +6,7 @@ class Index extends Component {
     return (
       <>
         <Navigation />
-        <h1>Hello World en al die dingen</h1>
+        <h1>Hello World en al die dingen en zo</h1>
       </>
     );
   }
