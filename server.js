@@ -7,7 +7,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const app = express();
 
 // Express port
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8080;
 // const db = process.env.DATABASE
 
 // CORS
