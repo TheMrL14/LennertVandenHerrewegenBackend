@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 var createError = require("http-errors");
+var mysql = require("mysql");
 
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
@@ -46,5 +47,25 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+var connection = mysql.createConnection({
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
+});
+
+console.log("hostname:" + process.env.RDS_HOSTNAME);
+
+connection.connect(function (err) {
+  if (err) {
+    console.error("Database connection failed: " + err.stack);
+    return;
+  }
+
+  console.log("Connected to database.");
+});
+
+connection.end();
 
 module.exports = app;
