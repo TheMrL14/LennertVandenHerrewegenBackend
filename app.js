@@ -56,7 +56,7 @@ var connection = mysql.createConnection({
   database: process.env.RDS_DB_NAME,
 });
 
-console.log(host);
+console.log(process.env.RDS_HOSTNAME);
 
 connection.connect(function (err) {
   if (err) {
