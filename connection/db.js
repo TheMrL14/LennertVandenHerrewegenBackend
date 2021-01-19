@@ -6,6 +6,7 @@ class Db {
     this.initConnection();
     this.connect();
   }
+
   // init vars for up connection with Amazon DB
   initConnection = () => {
     /*this.connection = mysql.createConnection({
@@ -38,8 +39,13 @@ class Db {
     //execute the param query on the DB and pass response to callback
   };
   executeQuery = (query, callback) => {
-    this.connection.query(query, (err, data, fiels) => {
-      callback(err, data, fiels);
+    this.connection.query(query, (err, data, fields) => {
+      callback(err, data, fields);
+    });
+  };
+  executePostQuery = (query, post, callback) => {
+    this.connection.query(query, post, (err, data, fields) => {
+      callback(err, data, fields);
     });
   };
 }
