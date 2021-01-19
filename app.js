@@ -49,11 +49,14 @@ app.use(function (err, req, res, next) {
 });
 
 var connection = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_SECRET,
-  database: process.env.MYSQL_DB,
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
+  database: process.env.RDS_DB_NAME,
 });
+
+console.log(host);
 
 connection.connect(function (err) {
   if (err) {
