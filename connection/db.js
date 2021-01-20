@@ -9,13 +9,14 @@ class Db {
 
   // init vars for up connection with Amazon DB
   initConnection = () => {
-    /*this.connection = mysql.createConnection({
-    host: process.env.RDS_HOSTNAME,
-    user: process.env.RDS_USERNAME,
-    password: process.env.RDS_PASSWORD,
-    port: process.env.RDS_PORT,
-    database: process.env.RDS_DB_NAME,
-  });*/
+    this.connection = mysql.createConnection({
+      host: process.env.RDS_HOSTNAME,
+      user: process.env.RDS_USERNAME,
+      password: process.env.RDS_PASSWORD,
+      port: process.env.RDS_PORT,
+      database: process.env.RDS_DB_NAME,
+    });
+    /*
     this.connection = mysql.createConnection({
       host: "aagyamvv9ln1ru.c0u0lotdmjch.eu-west-2.rds.amazonaws.com",
       user: "Admin",
@@ -23,6 +24,7 @@ class Db {
       port: 3306,
       database: "ebdb",
     });
+    */
   };
 
   // Connect to Db
