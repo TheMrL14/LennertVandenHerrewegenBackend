@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 var createError = require("http-errors");
-
+const dotenv = require("dotenv");
+dotenv.config();
 var cookieParser = require("cookie-parser");
 
 var indexRouter = require("./routes/index");

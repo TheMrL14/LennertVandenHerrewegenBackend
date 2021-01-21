@@ -9,6 +9,7 @@ class Db {
 
   // init vars for up connection with Amazon DB
   initConnection = () => {
+    console.log(process.env.RDS_HOSTNAME);
     this.connection = mysql.createConnection({
       host: process.env.RDS_HOSTNAME,
       user: process.env.RDS_USERNAME,
