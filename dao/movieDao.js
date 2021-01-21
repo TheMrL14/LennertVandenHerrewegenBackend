@@ -1,16 +1,16 @@
 var DB = require("../connection/db");
-
+const dbPath = "ebdb.Review";
 module.exports = class MovieDao {
   constructor() {
     this.db = new DB().getInstance();
   }
   getAllReviews = (callback) => {
-    const sql = "SELECT * FROM ebdb.Review;";
+    const sql = "SELECT * FROM " + dbPath + ";";
     this.db.executeQuery(sql, callback);
   };
 
   getReviewById = (id, callback) => {
-    const sql = "SELECT * FROM ebdb.Review WHERE id = " + id;
+    const sql = "SELECT * " + dbPath + " WHERE id = " + id;
     this.db.executeQuery(sql, callback);
   };
 
@@ -19,14 +19,17 @@ module.exports = class MovieDao {
       title: review.title,
       review: review.review,
       score: review.score,
+      userId: review.userId,
     };
-    const sql = "INSERT INTO ebdb.Review SET ?";
+    const sql = "INSERT INTO " + dbPath + " SET ?";
     this.db.executePostQuery(sql, post, callback);
   };
 
   updateUser = (review, id, callback) => {
     const sql =
-      "UPDATE ebdb.Review SET " +
+      "UPDATE " +
+      dbPath +
+      " SET " +
       Object.keys(review)
         .map((key) => `${key} = ?`)
         .join(", ") +
@@ -37,7 +40,7 @@ module.exports = class MovieDao {
   };
 
   deleteUser = (id, callback) => {
-    const sql = "DELETE FROM ebdb.Review WHERE id = " + id;
+    const sql = "DELETE FROM " + dbPath + " WHERE id = " + id;
     this.db.executeQuery(sql, callback);
   };
 };

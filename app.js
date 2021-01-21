@@ -1,17 +1,23 @@
+//Modules
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-var createError = require("http-errors");
+const createError = require("http-errors");
+const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+const Auth = require("./connection/Auth");
+
+//IN DEVELOPMENT : Get ENV vars
 const dotenv = require("dotenv");
 dotenv.config();
-var cookieParser = require("cookie-parser");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var moviesRouter = require("./routes/movies");
+//ROUTES
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const moviesRouter = require("./routes/movies");
 
-const helmet = require("helmet");
 // start app
+
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));
@@ -23,24 +29,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(helmet());
 
+//Authentication
+app.post("/movies", Auth.checkJwt, moviesRouter);
+
+//configure routes
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/users", Auth.checkJwt, usersRouter);
 app.use("/movies", moviesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
 });
 
 module.exports = app;

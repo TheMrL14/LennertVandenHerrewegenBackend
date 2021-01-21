@@ -3,7 +3,7 @@
 */
 const app = require("express");
 const cors = require("cors");
-
+var Auth = require("../connection/Auth");
 const Dao = require("../dao/movieDao");
 const response = require("../model/Responses");
 
@@ -34,11 +34,13 @@ router.post("/", (req, res) => {
     title: req.body.title,
     review: req.body.review,
     score: req.body.score,
+    userId: req.body.userId,
   };
+
   dao.addNewReview(review, (err, data, fields) => {
     if (err) throw err;
     res.location("/movies/" + data.insertId);
-    res.send(201, null);
+    res.sendStatus(201);
   });
 });
 
@@ -70,7 +72,7 @@ router.put("/:id", (req, res) => {
   //check if Id in params
   const id = req.params.id;
   if (id == undefined || isNaN(id)) {
-    res.sendStatus(404);
+    res.sendStatus(400);
     return;
   }
 

@@ -9,7 +9,6 @@ class Db {
 
   // init vars for up connection with Amazon DB
   initConnection = () => {
-    console.log(process.env.RDS_HOSTNAME);
     this.connection = mysql.createConnection({
       host: process.env.RDS_HOSTNAME,
       user: process.env.RDS_USERNAME,
@@ -17,15 +16,6 @@ class Db {
       port: process.env.RDS_PORT,
       database: process.env.RDS_DB_NAME,
     });
-    /*
-    this.connection = mysql.createConnection({
-      host: "aagyamvv9ln1ru.c0u0lotdmjch.eu-west-2.rds.amazonaws.com",
-      user: "Admin",
-      password: "JeffBezosZijnHoofdLijktOp1Biljartbal",
-      port: 3306,
-      database: "ebdb",
-    });
-    */
   };
 
   // Connect to Db
@@ -41,11 +31,15 @@ class Db {
 
     //execute the param query on the DB and pass response to callback
   };
+
+  //Execute query on DB
   executeQuery = (query, callback) => {
     this.connection.query(query, (err, data, fields) => {
       callback(err, data, fields);
     });
   };
+
+  //Execute post query on DB (with vars)
   executePostQuery = (query, post, callback) => {
     this.connection.query(query, post, (err, data, fields) => {
       callback(err, data, fields);
