@@ -119,6 +119,16 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+//SEARCH REVIEWS BY USER ID
+
+router.get("/reviews/:id", (req, res, next) => {
+  const id = req.params.id;
+  dao.getReviewsOfUser(id, (err, data, fields) => {
+    if (err) throw err;
+    res.json(data);
+  });
+});
+
 //CHECK IF EXISTS
 router.get("/count/:id", (req, res) => {
   const id = req.params.id;

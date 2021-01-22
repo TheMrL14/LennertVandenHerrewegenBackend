@@ -1,5 +1,6 @@
 var DB = require("../connection/db");
 const dbPath = "ebdb.User";
+const dbReviewPath = "ebdb.Review";
 module.exports = class MovieDao {
   constructor() {
     this.db = new DB().getInstance();
@@ -17,6 +18,11 @@ module.exports = class MovieDao {
   checkIfUserExist = (id, callback) => {
     const sql =
       "SELECT COUNT(*) AS count FROM " + dbPath + " WHERE userId ='" + id + "'";
+    this.db.executeQuery(sql, callback);
+  };
+
+  getReviewsOfUser = (id, callback) => {
+    const sql = "SELECT * FROM " + dbReviewPath + " WHERE userId ='" + id + "'";
     this.db.executeQuery(sql, callback);
   };
 

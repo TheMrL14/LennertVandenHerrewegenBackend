@@ -10,7 +10,7 @@ module.exports = class MovieDao {
   };
 
   getReviewById = (id, callback) => {
-    const sql = "SELECT * " + dbPath + " WHERE id = " + id;
+    const sql = "SELECT * FROM " + dbPath + " WHERE id = " + id;
     this.db.executeQuery(sql, callback);
   };
 
