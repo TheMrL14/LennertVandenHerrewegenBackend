@@ -146,6 +146,30 @@ router.get("/count/:id", (req, res) => {
   });
 });
 
+//DOWNLOAD USER DATA
+router.get("/data/:id", (req, res) => {
+  const id = req.params.id;
+  if (id == undefined) {
+    res.sendStatus(404);
+    return;
+  }
+  dao.downloadUserData(req.params.id, (err, data) => {
+    if (err) throw err;
+    if (data === undefined || data.length == 0) {
+      res.sendStatus(404);
+      return;
+    }
+
+    var json = JSON.stringify(data);
+    res.setHeader("Content-disposition", "attachment; filename= data.json");
+
+    res.setHeader("Content-type", "application/json");
+    res.write(json, function (err) {
+      res.end();
+    });
+  });
+});
+
 //NOT ALLOWED
 router.all("/", (req, res, next) => res.sendStatus(404));
 

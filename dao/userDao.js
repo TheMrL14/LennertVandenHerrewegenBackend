@@ -20,6 +20,25 @@ module.exports = class MovieDao {
     this.db.executeQueryWithParams(sql, id, callback);
   };
 
+  downloadUserData = (id, callback) => {
+    let user = {
+      email: null,
+      reviews: [],
+    };
+
+    const sql = "SELECT * FROM " + dbPath + " WHERE userId = ?";
+    this.db.executeQueryWithParams(sql, id, (err, data) => {
+      user.email = data[0].email;
+      const sql = "SELECT title,review FROM ebdb.Review WHERE userId = ?";
+      this.db.executeQueryWithParams(sql, id, (err, data2) => {
+        user.reviews = data2;
+
+        callback(err, user);
+      });
+    });
+    //
+  };
+
   getReviewsOfUser = (id, callback) => {
     const sql = "SELECT * FROM " + dbReviewPath + " WHERE userId = ?";
     this.db.executeQueryWithParams(sql, id, callback);
