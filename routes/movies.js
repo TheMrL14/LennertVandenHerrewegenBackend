@@ -91,7 +91,7 @@ router.put("/:id", (req, res) => {
     return;
   }
 
-  dao.updateUser(review, id, (err, data, fields) => {
+  dao.updateReview(review, id, (err, data, fields) => {
     if (err) throw err;
     if (data.affectedRows == 0) {
       res.sendStatus(404);
@@ -109,7 +109,7 @@ router.delete("/:id", (req, res) => {
     res.sendStatus(404);
     return;
   }
-  dao.deleteUser(req.params.id, (err, data) => {
+  dao.deleteMovie(req.params.id, (err, data) => {
     if (err) throw err;
     if (data.affectedRows == 0) {
       res.sendStatus(404);

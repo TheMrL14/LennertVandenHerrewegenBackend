@@ -39,6 +39,12 @@ class Db {
     });
   };
 
+  executeQueryWithParams = (query, params, callback) => {
+    this.connection.query(query, params, (err, data, fields) => {
+      callback(err, data, fields);
+    });
+  };
+
   //Execute post query on DB (with vars)
   executePostQuery = (query, post, callback) => {
     this.connection.query(query, post, (err, data, fields) => {

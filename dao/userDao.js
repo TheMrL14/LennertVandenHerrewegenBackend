@@ -11,19 +11,18 @@ module.exports = class MovieDao {
   };
 
   getUserById = (id, callback) => {
-    const sql = "SELECT * FROM " + dbPath + " WHERE userId = '" + id + "'";
-    this.db.executeQuery(sql, callback);
+    const sql = "SELECT * FROM " + dbPath + " WHERE userId = ?";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 
   checkIfUserExist = (id, callback) => {
-    const sql =
-      "SELECT COUNT(*) AS count FROM " + dbPath + " WHERE userId ='" + id + "'";
-    this.db.executeQuery(sql, callback);
+    const sql = "SELECT COUNT(*) AS count FROM " + dbPath + " WHERE userId = ?";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 
   getReviewsOfUser = (id, callback) => {
-    const sql = "SELECT * FROM " + dbReviewPath + " WHERE userId ='" + id + "'";
-    this.db.executeQuery(sql, callback);
+    const sql = "SELECT * FROM " + dbReviewPath + " WHERE userId = ?";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 
   addNewUser = (user, callback) => {
@@ -52,7 +51,7 @@ module.exports = class MovieDao {
   };
 
   deleteUser = (id, callback) => {
-    const sql = "DELETE FROM " + dbPath + " WHERE userId = " + id;
-    this.db.executeQuery(sql, callback);
+    const sql = "DELETE FROM " + dbPath + " WHERE userId = ? ";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 };

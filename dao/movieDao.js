@@ -10,8 +10,8 @@ module.exports = class MovieDao {
   };
 
   getReviewById = (id, callback) => {
-    const sql = "SELECT * FROM " + dbPath + " WHERE id = " + id;
-    this.db.executeQuery(sql, callback);
+    const sql = "SELECT * FROM " + dbPath + " WHERE id = ?";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 
   addNewReview = (review, callback) => {
@@ -25,7 +25,7 @@ module.exports = class MovieDao {
     this.db.executePostQuery(sql, post, callback);
   };
 
-  updateUser = (review, id, callback) => {
+  updateReview = (review, id, callback) => {
     const sql =
       "UPDATE " +
       dbPath +
@@ -39,8 +39,8 @@ module.exports = class MovieDao {
     this.db.executePostQuery(sql, post, callback);
   };
 
-  deleteUser = (id, callback) => {
-    const sql = "DELETE FROM " + dbPath + " WHERE id = " + id;
-    this.db.executeQuery(sql, callback);
+  deleteMovie = (id, callback) => {
+    const sql = "DELETE FROM " + dbPath + " WHERE id = ?";
+    this.db.executeQueryWithParams(sql, id, callback);
   };
 };
