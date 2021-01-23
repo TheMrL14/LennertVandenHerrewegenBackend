@@ -1,7 +1,7 @@
 var DB = require("../connection/db");
 const dbPath = "ebdb.User";
 const dbReviewPath = "ebdb.Review";
-module.exports = class MovieDao {
+module.exports = class userDao {
   constructor() {
     this.db = new DB().getInstance();
   }
@@ -49,7 +49,8 @@ module.exports = class MovieDao {
       userId: user.userId,
       userName: user.userName,
       email: user.email,
-      isVerified: 0,
+      isUser: 0,
+      isAdmin: 0,
     };
     const sql = "INSERT INTO " + dbPath + " SET ?";
     this.db.executePostQuery(sql, newUser, callback);
@@ -72,5 +73,20 @@ module.exports = class MovieDao {
   deleteUser = (id, callback) => {
     const sql = "DELETE FROM " + dbPath + " WHERE userId = ? ";
     this.db.executeQueryWithParams(sql, id, callback);
+  };
+
+  isUserNotAdmin = (id, callback) => {
+    const sql = "SELECT isUser,isAdmin FROM ebdb.User where userId = ?";
+    this.db.executeQueryWithParams(sql, id, (err, data) => {
+      if (data[0].isUser === 1) {
+        callback(true);
+        return;
+      } else if (data[0].isAdmin === 1) {
+        callback(false);
+        return;
+      }
+      callback(null);
+      return;
+    });
   };
 };

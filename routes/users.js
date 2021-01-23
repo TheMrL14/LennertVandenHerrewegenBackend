@@ -34,8 +34,10 @@ router.post("/", (req, res) => {
     userId: req.body.userId,
     userName: req.body.userName,
     email: req.body.email,
-    isVerified: 0,
+    isUser: 1,
+    isAdmin: 0,
   };
+
   dao.addNewUser(user, (err, data, fields) => {
     if (err) throw err;
     res.location("/users/" + data.insertId);
@@ -56,7 +58,6 @@ router.get("/:id", (req, res) => {
   }
   dao.getUserById(req.params.id, (err, data, fields) => {
     if (err) throw err;
-    console.log(data);
     if (data === undefined || data.length == 0) {
       res.sendStatus(404);
       return;
@@ -78,7 +79,8 @@ router.put("/:id", (req, res) => {
     userId: req.body.userId,
     userName: req.body.userName,
     email: req.body.email,
-    isVerified: 0,
+    isUser: 1,
+    isAdmin: 0,
   };
   // DELETE undefined objects from updated user
   Object.keys(user).forEach((key) =>
@@ -162,7 +164,6 @@ router.get("/data/:id", (req, res) => {
 
     var json = JSON.stringify(data);
     res.setHeader("Content-disposition", "attachment; filename= data.json");
-
     res.setHeader("Content-type", "application/json");
     res.write(json, function (err) {
       res.end();

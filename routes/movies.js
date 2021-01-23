@@ -5,10 +5,12 @@ const app = require("express");
 const cors = require("cors");
 var Auth = require("../connection/Auth");
 const Dao = require("../dao/movieDao");
+const userDao = require("../dao/userDao");
 const response = require("../model/Responses");
 
 const router = app.Router();
 const dao = new Dao();
+const uDao = new userDao();
 
 const corsOptions = {
   origin: "*",
@@ -36,11 +38,26 @@ router.post("/", (req, res) => {
     score: req.body.score,
     userId: req.body.userId,
   };
+  let isAdmin = false,
+    isUser = false;
 
-  dao.addNewReview(review, (err, data, fields) => {
-    if (err) throw err;
-    res.location("/movies/" + data.insertId);
-    res.sendStatus(201);
+  const promiseIsUser = new Promise((isUser, error) => {
+    uDao.isUserNotAdmin(review.userId, (b) => {
+      isUser(b);
+    });
+  });
+
+  promiseIsUser.then((isUser) => {
+    console.log(isUser);
+    if (!isUser) {
+      res.sendStatus(401);
+      return;
+    }
+    dao.addNewReview(review, (err, data, fields) => {
+      if (err) throw err;
+      res.location("/movies/" + data.insertId);
+      res.sendStatus(201);
+    });
   });
 });
 
@@ -81,6 +98,8 @@ router.put("/:id", (req, res) => {
     review: req.body.review,
     score: req.body.score,
   };
+
+  console.log(req.body.userId);
   // DELETE undefined objects from updated review
   Object.keys(review).forEach((key) =>
     review[key] === undefined ? delete review[key] : {}
