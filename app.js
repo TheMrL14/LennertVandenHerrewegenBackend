@@ -41,7 +41,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 //Authentication
-//app.post("/reviews", Auth.checkJwt, reviewsRouter);
+app.post("/reviews", Auth.checkJwt, reviewsRouter);
 app.delete("/reviews", Auth.checkJwt, reviewsRouter);
 app.put("/reviews", Auth.checkJwt, reviewsRouter);
 app.use("/users", Auth.checkJwt, usersRouter);
