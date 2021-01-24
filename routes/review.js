@@ -24,7 +24,7 @@ router.get("/", (req, res, next) => {
 });
 
 //POST
-router.post("/", (req, res) => {
+router.post("/", Auth.checkJwt, (req, res) => {
   let review = {
     title: req.body.title,
     review: req.body.review,
@@ -41,7 +41,6 @@ router.post("/", (req, res) => {
   });
 
   promiseIsUser.then((isUser) => {
-    console.log(isUser);
     if (!isUser) {
       res.sendStatus(401);
       return;
@@ -84,14 +83,13 @@ router.get("/:id", (req, res) => {
 });
 
 //PUT
-router.put("/:id", (req, res) => {
+router.put("/:id", Auth.checkJwt, (req, res) => {
   let review = {
     title: req.body.title,
     review: req.body.review,
     score: req.body.score,
   };
 
-  console.log(req.body.userId);
   // DELETE undefined objects from updated review
   Object.keys(review).forEach((key) =>
     review[key] === undefined ? delete review[key] : {}
@@ -113,7 +111,7 @@ router.put("/:id", (req, res) => {
   });
 });
 //DELETE
-router.delete("/:id", (req, res) => {
+router.delete("/:id", Auth.checkJwt, (req, res) => {
   dao.deletereview(req.params.id, (err, data) => {
     if (err) throw err;
     if (data.affectedRows == 0) {
