@@ -35,6 +35,7 @@ const corsOptions = {
   origin: "https://www.lennertvh.xyz",
   methods: "GET,HEAD,POST,OPTIONS,DELETE",
   allowedHeaders: "",
+  exposedHeaders: ["Content-Type", "application/json"],
 };
 
 // SET CORS HEADERS
