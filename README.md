@@ -4,12 +4,17 @@ online link = https://bmc.lennertvh.xyz/
 
 # Resources
 
-## private Recources (only from origin: https://www.lennertvh.xyz)
-
 ### API :
+
 (public api by using api key)
 
+path /api/reviews?apikey=XXXXXXXX
+GET
 
+path /api/reviews/:id?apikey=XXXXXXXX
+GET
+
+## private Recources (only from origin: https://www.lennertvh.xyz)
 
 ### Reviews:
 
