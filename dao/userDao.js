@@ -78,6 +78,10 @@ module.exports = class userDao {
   isUserNotAdmin = (id, callback) => {
     const sql = "SELECT isUser,isAdmin FROM ebdb.User where userId = ?";
     this.db.executeQueryWithParams(sql, id, (err, data) => {
+      if (data == undefined) {
+        callback(0);
+        return;
+      }
       if (data[0].isUser === 1) {
         callback(true);
         return;
