@@ -1,6 +1,7 @@
 const path = require("path");
-var jwt = require("express-jwt");
-var jwks = require("jwks-rsa");
+const jwt = require("express-jwt");
+const jwks = require("jwks-rsa");
+const nJwt = require("njwt");
 
 module.exports = Object.freeze({
   checkJwt: jwt({
@@ -14,4 +15,13 @@ module.exports = Object.freeze({
     issuer: "https://appframework-dev.eu.auth0.com/",
     algorithms: ["RS256"],
   }),
+
+  checkAPIjwt: (key) => {
+    try {
+      verifiedJwt = nJwt.verify(key, process.env.SIGNINGKEY);
+      return 1;
+    } catch (e) {
+      return 0;
+    }
+  },
 });

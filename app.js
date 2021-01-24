@@ -14,13 +14,12 @@ dotenv.config();
 //ROUTES
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
-const moviesRouter = require("./routes/movies");
+const reviewsRouter = require("./routes/review");
+const apiRouter = require("./routes/apikey");
 
 // start app
 
 const app = express();
-
-app.use(cors());
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
@@ -31,13 +30,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(helmet());
 
+const corsOptions = {
+  origin: "http://localhost:9000",
+  //origin: "www.lennertvh.xyz",
+  methods: "GET,HEAD,POST,OPTIONS,DELETE",
+  allowedHeaders: "",
+};
+
+// SET CORS HEADERS
+app.use(cors(corsOptions));
+
 //Authentication
-app.post("/movies", Auth.checkJwt, moviesRouter);
+//app.post("/reviews", Auth.checkJwt, reviewsRouter);
+app.delete("/reviews", Auth.checkJwt, reviewsRouter);
+app.put("/reviews", Auth.checkJwt, reviewsRouter);
+app.use("/users", Auth.checkJwt, usersRouter);
 
 //configure routes
 app.use("/", indexRouter);
+app.use("/apikey", apiRouter);
 app.use("/users", Auth.checkJwt, usersRouter);
-app.use("/movies", moviesRouter);
+app.use("/reviews", reviewsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

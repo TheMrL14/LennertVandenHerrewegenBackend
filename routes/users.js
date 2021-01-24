@@ -10,15 +10,8 @@ const response = require("../model/Responses");
 const router = app.Router();
 const dao = new Dao();
 
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,POST",
-  allowedHeaders: "",
-};
-
-router.use(cors(corsOptions));
 //OPTIONS
-router.options("/", (req, res, next) => res.send(200, null));
+router.options("/", (req, res, next) => res.sendStatus(200));
 
 //GET
 router.get("/", (req, res, next) => {

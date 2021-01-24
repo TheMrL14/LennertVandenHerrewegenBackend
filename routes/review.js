@@ -1,10 +1,10 @@
 /* 
-  /movies request
+  /reviews request
 */
 const app = require("express");
 const cors = require("cors");
 var Auth = require("../connection/Auth");
-const Dao = require("../dao/movieDao");
+const Dao = require("../dao/reviewDao");
 const userDao = require("../dao/userDao");
 const response = require("../model/Responses");
 
@@ -12,15 +12,8 @@ const router = app.Router();
 const dao = new Dao();
 const uDao = new userDao();
 
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,POST",
-  allowedHeaders: "",
-};
-
-router.use(cors(corsOptions));
 //OPTIONS
-router.options("/", (req, res, next) => res.send(200, null));
+router.options("/", (req, res, next) => res.sendStatus(200));
 
 //GET
 router.get("/", (req, res, next) => {
@@ -55,7 +48,7 @@ router.post("/", (req, res) => {
     }
     dao.addNewReview(review, (err, data, fields) => {
       if (err) throw err;
-      res.location("/movies/" + data.insertId);
+      res.location("/reviews/" + data.insertId);
       res.sendStatus(201);
     });
   });
@@ -65,14 +58,20 @@ router.post("/", (req, res) => {
 /id
 */
 
-//GET
-router.get("/:id", (req, res) => {
-  //check if Id in params
+router.use("/:id", (req, res, next) => {
   const id = req.params.id;
   if (id == undefined || isNaN(id)) {
     res.sendStatus(404);
     return;
+  } else {
+    next();
   }
+});
+
+//GET
+router.get("/:id", (req, res) => {
+  //check if Id in params
+  const id = req.params.id;
   dao.getReviewById(req.params.id, (err, data, fields) => {
     if (err) throw err;
     if (data === undefined || data.length == 0) {
@@ -86,13 +85,6 @@ router.get("/:id", (req, res) => {
 
 //PUT
 router.put("/:id", (req, res) => {
-  //check if Id in params
-  const id = req.params.id;
-  if (id == undefined || isNaN(id)) {
-    res.sendStatus(400);
-    return;
-  }
-
   let review = {
     title: req.body.title,
     review: req.body.review,
@@ -122,13 +114,7 @@ router.put("/:id", (req, res) => {
 });
 //DELETE
 router.delete("/:id", (req, res) => {
-  //check if Id in params
-  const id = req.params.id;
-  if (id == undefined || isNaN(id)) {
-    res.sendStatus(404);
-    return;
-  }
-  dao.deleteMovie(req.params.id, (err, data) => {
+  dao.deletereview(req.params.id, (err, data) => {
     if (err) throw err;
     if (data.affectedRows == 0) {
       res.sendStatus(404);
