@@ -6,6 +6,11 @@ online link = https://bmc.lennertvh.xyz/
 
 ## private Recources (only from origin: https://www.lennertvh.xyz)
 
+### API :
+(public api by using api key)
+
+
+
 ### Reviews:
 
 path: /reviews

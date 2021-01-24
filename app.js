@@ -48,7 +48,7 @@ app.use("/users", Auth.checkJwt, usersRouter);
 
 //configure routes
 app.use("/", indexRouter);
-app.use("/apikey", apiRouter);
+app.use("/api", apiRouter);
 app.use("/users", Auth.checkJwt, usersRouter);
 app.use("/reviews", reviewsRouter);
 

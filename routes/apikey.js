@@ -35,13 +35,22 @@ router.get("/", cors(publicCorsOpitions), (req, res, next) => {
   const jwt = nJwt.create(claims, signingKey);
 
   const token = jwt.compact();
-  console.log(token);
   console.log(Auth.checkAPIjwt(token));
   console.log(Auth.checkAPIjwt("abcdef"));
 });
 
 router.get("/reviews", (req, res, next) => {
-  const key = req.body.apikey;
+  const key = req.query.apikey;
+  if (Auth.checkAPIjwt(key) !== 1) {
+    res.sendStatus(401);
+    return;
+  }
+  next();
+});
+
+router.get("/reviews/:id", (req, res, next) => {
+  const key = req.query.apikey;
+
   if (Auth.checkAPIjwt(key) !== 1) {
     res.sendStatus(401);
     return;
@@ -59,7 +68,7 @@ router.get("/reviews", cors(publicCorsOpitions), (req, res, next) => {
 //GET
 router.get("/reviews/:id", cors(publicCorsOpitions), (req, res, next) => {
   const id = req.params.id;
-  dao.getReviewsOfUser(id, (err, data, fields) => {
+  dao.getReviewById(id, (err, data, fields) => {
     if (err) throw err;
     res.json(data);
   });
