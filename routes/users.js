@@ -13,14 +13,6 @@ const dao = new Dao();
 //OPTIONS
 router.options("/", (req, res, next) => res.sendStatus(200));
 
-//GET
-router.get("/", (req, res, next) => {
-  dao.getAllUsers((err, data, fields) => {
-    if (err) throw err;
-    res.json(data);
-  });
-});
-
 //POST
 router.post("/", (req, res) => {
   let user = {
